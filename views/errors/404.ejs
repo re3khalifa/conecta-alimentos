@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>404 — Página no encontrada | Conecta Alimentos</title>
+</head>
+<body>
+  <%- include('../layout/header', { title: '404 - Página no encontrada' }) %>
+
+  <main class="container">
+    <div class="error-ticket">
+      <div class="code">404</div>
+      <h1 class="page-title">Esta página ya no existe</h1>
+      <p class="muted">La página que buscas no existe o fue movida. Puede que la oferta ya haya caducado.</p>
+      <a class="btn" href="/" style="margin-top:20px;">Volver al inicio</a>
+    </div>
+  </main>
+
+  <%- include('../layout/footer') %>
+</body>
+</html>

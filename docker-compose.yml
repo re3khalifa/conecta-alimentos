@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  # ── Base de datos ──────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    container_name: conecta-alimentos-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # ── Aplicación Node/Express ─────────────────────────────────────────────────
+  app:
+    build: .
+    container_name: conecta-alimentos-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # OJO: aquí "mongo" es el nombre del servicio de arriba, NO 127.0.0.1 —
+      # dentro de la red interna de Docker, cada servicio se resuelve por su
+      # nombre, como si fuera un hostname real.
+      MONGO_URI: mongodb://mongo:27017/conecta-alimentos
+      PORT: 3000
+      NODE_ENV: production
+      JWT_SECRET: ${JWT_SECRET:-una_clave_larga_y_secreta_123456789}
+      JWT_EXPIRES_IN: 1d
+    depends_on:
+      - mongo
+    volumes:
+      # Persiste las fotos de ofertas subidas aunque se reconstruya el contenedor
+      - uploads_data:/app/public/uploads/offers
+
+volumes:
+  mongo_data:
+  uploads_data:

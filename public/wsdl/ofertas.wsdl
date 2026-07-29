@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+    name="ConectaAlimentosService"
+    targetNamespace="http://conectaalimentos.com/soap"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://conectaalimentos.com/soap"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <types/>
+
+    <message name="GetOffersRequest"/>
+
+    <message name="GetOffersResponse">
+        <part name="offers" type="xsd:string"/>
+    </message>
+
+    <portType name="ConectaAlimentosPortType">
+
+        <operation name="GetOffers">
+
+            <input message="tns:GetOffersRequest"/>
+
+            <output message="tns:GetOffersResponse"/>
+
+        </operation>
+
+    </portType>
+
+    <binding
+        name="ConectaAlimentosBinding"
+        type="tns:ConectaAlimentosPortType">
+
+        <soap:binding
+            style="document"
+            transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <operation name="GetOffers">
+
+            <soap:operation soapAction="GetOffers"/>
+
+            <input>
+                <soap:body use="literal"/>
+            </input>
+
+            <output>
+                <soap:body use="literal"/>
+            </output>
+
+        </operation>
+
+    </binding>
+
+    <service name="ConectaAlimentosService">
+
+        <documentation>
+            Servicio SOAP para consultar ofertas.
+        </documentation>
+
+        <port
+            name="ConectaAlimentosPort"
+            binding="tns:ConectaAlimentosBinding">
+
+            <soap:address
+                location="https://conecta-alimentos.onrender.com/api/soap"/>
+
+        </port>
+
+    </service>
+
+</definitions>

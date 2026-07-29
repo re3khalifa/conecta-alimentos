@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Detalle de oferta | Conecta Alimentos</title>
+  </head>
+  <body data-offer-id="<%= typeof id !== 'undefined' ? id : '' %>" data-user-role="<%= user ? user.role : '' %>">
+    <%- include('layout/header', { title: 'Detalle de oferta' }) %>
+
+    <nav class="breadcrumb container">
+      <a href="/">Inicio</a> / <a href="/ofertas">Ofertas</a> / <span>Detalle</span>
+    </nav>
+
+    <main class="container section">
+
+      <div class="detail-wrap">
+
+        <section class="stack" style="gap:18px;">
+
+          <!-- Foto del producto -->
+          <img id="offerImage" class="detail-hero-img" alt="" style="display:none;" />
+          <div id="offerImagePlaceholder" class="detail-hero-img no-photo-lg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="46" height="46"><path d="M3 9l1-5h16l1 5M3 9v10a1 1 0 001 1h16a1 1 0 001-1V9M3 9h18M8 13a2 2 0 104 0 2 2 0 00-4 0z"/></svg>
+            <span style="font-family:var(--font-mono); font-size:12px; text-transform:uppercase; letter-spacing:.06em;">Este comercio no subió una foto</span>
+          </div>
+
+          <div class="card">
+            <h3>Ubicación</h3>
+            <p class="muted">Google Maps</p>
+
+            <div class="map-embed" style="margin-top:10px;">
+              <iframe
+                id="gmapFrame"
+                src=""
+                width="600"
+                height="380"
+                style="border:0; width:100%;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <div style="margin-top:12px;">
+              <a id="gmapLink" class="btn btn-outline btn-small" href="#" target="_blank" rel="noreferrer">
+                Abrir en Google Maps
+              </a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Clima en la zona</h3>
+            <p class="muted">Fuente: Open-Meteo (datos en tiempo real)</p>
+            <div id="weatherBox" class="muted" style="margin-top:10px;">Cargando clima…</div>
+          </div>
+        </section>
+
+        <aside class="card" id="detailCard">
+          <div class="skeleton" style="height:24px; width:70%; margin-bottom:12px;"></div>
+          <div class="skeleton" style="height:14px; width:90%; margin-bottom:8px;"></div>
+          <div class="skeleton" style="height:14px; width:60%;"></div>
+        </aside>
+
+      </div>
+    </main>
+
+    <script src="/js/csrf.js"></script>
+    <script src="/js/offer-detail.js"></script>
+
+    <%- include('layout/footer') %>
+  </body>
+</html>

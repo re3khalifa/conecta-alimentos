@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Iniciar sesión | Conecta Alimentos</title>
+  </head>
+  <body>
+    <%- include('layout/header', { title: 'Login' }) %>
+
+    <div class="auth-shell">
+      <div class="auth-side">
+        <span class="eyebrow">Bienvenido de vuelta</span>
+        <h2>Tu próxima oferta te está esperando.</h2>
+        <p>Entra para ver ofertas cerca de ti, dar seguimiento a tus reservas o administrar tu comercio.</p>
+        <div class="chip-row">
+          <span class="chip">🥖 Panadería</span>
+          <span class="chip">🍎 Frutas</span>
+          <span class="chip">🍱 Comida</span>
+        </div>
+      </div>
+
+      <div class="auth-form-wrap">
+        <div class="form-card" style="width:min(100%, 380px);">
+          <h2 class="page-title">Iniciar sesión</h2>
+          <p class="page-subtitle">Accede para administrar tu cuenta.</p>
+
+          <form id="loginForm" novalidate>
+            <label>Correo electrónico</label>
+            <input id="email" type="email" placeholder="tucorreo@ejemplo.com" required />
+
+            <label>Contraseña</label>
+            <input id="password" type="password" placeholder="••••••••" required />
+
+            <p class="text-center mt-3" style="font-size:13px;">
+              <a href="/auth/forgot-password" style="color:var(--cielo); font-weight:600;">
+                ¿Olvidaste tu contraseña?
+              </a>
+            </p>
+
+            <p id="formMsg" class="form-msg" style="margin-top:10px; color:var(--brasa); min-height:20px;"></p>
+
+            <button class="btn btn-block" type="submit" id="submitBtn">Entrar</button>
+            <a class="btn btn-outline btn-block" href="/auth/register" style="margin-top:8px;">Crear cuenta</a>
+          </form>
+          <script src="/js/csrf.js"></script>
+          <script src="/js/login.js"></script>
+        </div>
+      </div>
+    </div>
+
+    <%- include('layout/footer') %>
+
+  </body>
+</html>

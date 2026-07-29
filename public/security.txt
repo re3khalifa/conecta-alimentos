@@ -1,0 +1,4 @@
+Contact: mailto:admin@conectaalimentos.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: es
+Canonical: https://conecta-alimentos.onrender.com/.well-known/security.txt

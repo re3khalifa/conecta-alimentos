@@ -1,0 +1,47 @@
+<header class="header">
+  <nav class="nav container">
+
+    <a class="logo" href="/">
+      <span class="dot"></span>
+      Conecta Alimentos
+    </a>
+
+    <ul class="menu">
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/ofertas">Ofertas</a></li>
+      <li><a href="/impacto-ods">Impacto ODS</a></li>
+
+      <% if (user) { %>
+
+        <li>
+          <% if (user.role === 'commerce') { %>
+            <a href="/commerce">Panel comercio</a>
+          <% } else { %>
+            <a href="/user">Mi panel</a>
+          <% } %>
+        </li>
+
+        <li><span class="user-chip"><%= user.email %></span></li>
+
+        <li>
+          <button id="logoutBtn" class="btn btn-outline btn-small">
+            Cerrar sesión
+          </button>
+        </li>
+
+      <% } else { %>
+
+        <li><a href="/auth/login">Iniciar sesión</a></li>
+        <li><a href="/auth/register" class="btn btn-small">Publicar / reservar</a></li>
+
+      <% } %>
+
+    </ul>
+
+  </nav>
+</header>
+
+<% if (user) { %>
+  <script src="/js/csrf.js"></script>
+  <script src="/js/logout.js"></script>
+<% } %>

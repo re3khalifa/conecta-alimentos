@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title><%= editMode ? 'Editar oferta' : 'Nueva oferta' %> | Conecta Alimentos</title>
+</head>
+<body data-edit-mode="<%= editMode ? 'true' : 'false' %>" data-offer-id="<%= offerId || '' %>">
+
+  <%- include('../layout/header', { title: editMode ? 'Editar oferta' : 'Nueva oferta' }) %>
+
+  <nav class="breadcrumb container">
+    <a href="/">Inicio</a> / <a href="/commerce">Panel comercio</a> /
+    <span><%= editMode ? 'Editar oferta' : 'Nueva oferta' %></span>
+  </nav>
+
+  <main class="container section">
+    <span class="eyebrow"><%= editMode ? 'Editar oferta' : 'Nueva oferta' %></span>
+    <h1 class="page-title"><%= editMode ? 'Editar oferta' : 'Publicar una oferta' %></h1>
+    <p class="page-subtitle"><%= editMode ? 'Actualiza los datos de tu oferta.' : 'Sube una foto real del producto: las ofertas con foto se reservan mucho más rápido.' %></p>
+
+    <section style="display:grid; grid-template-columns: 1.1fr .9fr; gap:26px; align-items:start;">
+
+      <div class="form-card" style="width:100%;">
+        <form id="offerForm">
+
+          <label>Foto del producto</label>
+          <label class="image-upload" id="imageDropzone" for="imageInput">
+            <input type="file" id="imageInput" accept="image/png, image/jpeg, image/webp" />
+            <div class="icon">📷</div>
+            <div>Arrastra una foto aquí o haz clic para elegirla</div>
+            <div class="hint">JPG, PNG o WEBP · máx. 5 MB</div>
+          </label>
+          <div class="image-preview" id="imagePreview">
+            <img id="imagePreviewImg" alt="Vista previa del producto" />
+            <button type="button" class="remove-img" id="removeImageBtn">Quitar</button>
+          </div>
+
+          <label>Título</label>
+          <input id="title" type="text" placeholder="Ej. Pan integral del día" required />
+
+          <label>Categoría</label>
+          <select id="category" required>
+            <option value="">Selecciona…</option>
+            <option value="Panadería">Panadería</option>
+            <option value="Frutas">Frutas</option>
+            <option value="Comida">Comida</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Lácteos">Lácteos</option>
+            <option value="Verduras">Verduras</option>
+            <option value="Otro">Otro</option>
+          </select>
+
+          <label>Descripción</label>
+          <textarea id="description" rows="3" placeholder="Describe brevemente la oferta…"></textarea>
+
+          <label>Precio ($)</label>
+          <input id="price" type="number" min="0" step="0.01" placeholder="0.00" />
+
+          <label>Cantidad disponible</label>
+          <input id="quantity" type="number" min="1" placeholder="Ej. 10" />
+
+          <label>Fecha de caducidad</label>
+          <input id="expirationDate" type="date" required />
+
+          <label>Dirección</label>
+          <input id="address" type="text" placeholder="Ej. Calle + Número + Colonia + Ciudad + México" autocomplete="off" />
+
+          <!-- Coordenadas ocultas — se llenan automáticamente al escribir la dirección -->
+          <input type="hidden" id="lat" />
+          <input type="hidden" id="lng" />
+
+          <!-- Preview del mapa -->
+          <div id="mapPreview" style="display:none; margin-top: 8px; border-radius: var(--radius-sm); overflow: hidden; height: 200px;" class="map-embed">
+            <iframe id="mapFrame" width="100%" height="200" frameborder="0" style="border:0;" allowfullscreen></iframe>
+          </div>
+          <p id="geoMsg" class="form-msg muted" style="margin-top: 4px; min-height: 16px;"></p>
+
+          <p id="formMsg" class="form-msg" style="color: var(--brasa); min-height: 18px;"></p>
+
+          <button class="btn" type="submit" id="submitBtn">
+            <%= editMode ? 'Guardar cambios' : 'Publicar oferta' %>
+          </button>
+          <a class="btn btn-outline" href="/commerce/offers">Cancelar</a>
+
+        </form>
+      </div>
+
+      <!-- Vista previa en vivo de la oferta -->
+      <aside>
+        <p class="section-title">Así se verá tu oferta</p>
+        <article class="ticket" id="livePreview">
+          <div class="ticket-media">
+            <img id="previewImg" alt="" style="display:none;" />
+            <div class="no-photo" id="previewNoPhoto">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l1-5h16l1 5M3 9v10a1 1 0 001 1h16a1 1 0 001-1V9M3 9h18M8 13a2 2 0 104 0 2 2 0 00-4 0z"/></svg>
+              <span>Sin foto</span>
+            </div>
+            <span class="stamp ok ticket-stamp">Activa</span>
+          </div>
+          <div class="ticket-perf"></div>
+          <div class="ticket-body">
+            <span class="ticket-cat" id="previewCategory">Categoría</span>
+            <h3 class="ticket-title" id="previewTitle">Título de la oferta</h3>
+            <p class="ticket-desc" id="previewDesc">La descripción aparecerá aquí.</p>
+            <div class="ticket-price-row">
+              <span class="ticket-price" id="previewPrice">$0<small>MXN</small></span>
+              <span class="ticket-exp" id="previewQty">— disponibles</span>
+            </div>
+          </div>
+        </article>
+      </aside>
+
+    </section>
+  </main>
+
+  <%- include('../layout/footer') %>
+
+  <script src="/js/csrf.js"></script>
+  <script src="/js/new-offer.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Mis ofertas | Conecta Alimentos</title>
+</head>
+<body>
+
+  <%- include('../layout/header', { title: 'Comercio - Mis Ofertas' }) %>
+
+  <nav class="breadcrumb container">
+    <a href="/">Inicio</a> / <a href="/commerce">Panel comercio</a> / <span>Mis ofertas</span>
+  </nav>
+
+  <main class="container section">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:22px;">
+      <div>
+        <span class="eyebrow">Tus ofertas</span>
+        <h1 class="page-title">Mis ofertas</h1>
+        <p class="page-subtitle" style="margin-bottom:0;">Ofertas registradas en tu comercio.</p>
+      </div>
+      <a class="btn" href="/commerce/new-offer">+ Nueva oferta</a>
+    </div>
+
+    <div id="offersContainer" class="grid cards">
+      <div class="loading-state">Cargando ofertas…</div>
+    </div>
+
+  </main>
+
+  <%- include('../layout/footer') %>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="/js/csrf.js"></script>
+  <script src="/js/commerce-offers.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Ofertas | Conecta Alimentos</title>
+  </head>
+  <body data-user-role="<%= user ? user.role : '' %>">
+
+    <%- include('layout/header', { title: 'Ofertas' }) %>
+
+    <nav class="breadcrumb container">
+      <a href="/">Inicio</a> / <span>Ofertas</span>
+    </nav>
+
+    <main class="container section">
+      <span class="eyebrow">Catálogo de ofertas</span>
+      <h1 class="page-title">Ofertas disponibles</h1>
+      <p class="page-subtitle">Busca por lo que se te antoja o filtra a detalle: precio, categoría, fecha de caducidad.</p>
+
+      <!-- Selector de modo -->
+      <section class="card" style="margin-bottom:14px; padding:14px 18px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+          <div class="muted" style="font-family:var(--font-mono); font-size:12.5px; text-transform:uppercase; letter-spacing:.05em;">Modo de búsqueda</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-small" type="button" id="simpleBtn">Simple</button>
+            <button class="btn btn-outline btn-small" type="button" id="advancedBtn">Avanzada</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SIMPLE -->
+      <section class="card" id="simpleBox">
+        <form class="search-form" id="simpleForm" autocomplete="off" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <input id="simpleSearch" type="text" name="search" placeholder="Ej. pan, fruta, panadería del centro…" style="flex:1; min-width:220px;" />
+          <button class="btn" type="submit">Buscar</button>
+        </form>
+
+        <div id="resultsSimple" class="grid cards" style="margin-top:20px;"></div>
+        <p id="emptySimple" class="muted center" style="display:none; padding:24px 0;">No se encontraron ofertas. Prueba con otra palabra.</p>
+      </section>
+
+      <!-- AVANZADA -->
+      <section class="card" id="advancedBox" style="display:none; margin-top:14px;">
+        <form id="offerSearchForm" autocomplete="off">
+          <div class="row" style="display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px;">
+            <div class="field">
+              <label>Búsqueda</label>
+              <input id="q" type="text" placeholder="Ej. pan, fruta, panadería...">
+            </div>
+
+            <div class="field">
+              <label>Categoría</label>
+              <select id="category">
+                <option value="">Todas</option>
+                <option value="Panadería">Panadería</option>
+                <option value="Frutas">Frutas</option>
+                <option value="Comida">Comida</option>
+                <option value="Bebidas">Bebidas</option>
+                <option value="Lácteos">Lácteos</option>
+                <option value="Verduras">Verduras</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Orden</label>
+              <select id="sort">
+                <option value="">Relevancia</option>
+                <option value="price_asc">Precio ↑</option>
+                <option value="price_desc">Precio ↓</option>
+                <option value="exp_asc">Vence primero</option>
+                <option value="exp_desc">Vence último</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" style="display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px; margin-top:4px;">
+            <div class="field">
+              <label>Precio mínimo</label>
+              <input id="minPrice" type="number" min="0" step="1" placeholder="0" />
+            </div>
+
+            <div class="field">
+              <label>Precio máximo</label>
+              <input id="maxPrice" type="number" min="0" step="1" placeholder="200" />
+            </div>
+
+            <div class="field">
+              <label>Vence antes de</label>
+              <input id="expiresBefore" type="date" />
+            </div>
+
+            <div class="field">
+              <label>Cantidad mínima</label>
+              <input id="minQty" type="number" min="0" step="1" placeholder="1" />
+            </div>
+          </div>
+
+          <div class="actions" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:14px;">
+            <button class="btn" type="submit">Buscar</button>
+            <button class="btn btn-outline" type="button" id="clearBtn">Limpiar</button>
+            <span class="muted form-msg" id="formError"></span>
+          </div>
+        </form>
+
+        <div id="results" class="grid cards" style="margin-top:20px;"></div>
+        <p id="emptyState" class="muted center" style="display:none; padding:24px 0;">No se encontraron ofertas con esos filtros.</p>
+      </section>
+    </main>
+
+    <script src="/js/offers.js"></script>
+
+    <%- include('layout/footer') %>
+
+  </body>
+</html>

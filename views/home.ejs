@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Conecta Alimentos conecta comercios con excedentes de comida y personas que quieren aprovecharlos a buen precio, antes de que se pierdan." />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Conecta Alimentos — Aprovecha excedentes de comida antes de que se pierdan</title>
+  </head>
+  <body>
+    <%- include('layout/header', { title: 'Inicio' }) %>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Ofertas de excedentes</span>
+          <h1>Encuentra <em>ofertas</em><br>de comercios cerca de ti.</h1>
+          <p class="hero-lead">Panaderías, fruterías y comercios locales publican lo que les sobra antes de que caduque. Tú lo reservas a buen precio y lo recoges. Menos desperdicio, más mesa.</p>
+          <div class="hero-actions">
+            <a href="/ofertas" class="btn">Ver ofertas cerca de ti</a>
+            <a href="/auth/register" class="btn btn-outline" style="color:#fff; border-color:rgba(255,255,255,.4);">Publicar como comercio</a>
+          </div>
+        </div>
+
+        <div class="hero-stat">
+          <div class="ticket" style="background:var(--paper-2);">
+            <div class="ticket-media">
+              <div class="no-photo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l1-5h16l1 5M3 9v10a1 1 0 001 1h16a1 1 0 001-1V9M3 9h18M8 13a2 2 0 104 0 2 2 0 00-4 0z"/></svg>
+                <span>Foto del producto</span>
+              </div>
+              <span class="stamp warn ticket-stamp">Vence hoy</span>
+            </div>
+            <div class="ticket-perf"></div>
+            <div class="ticket-body">
+              <span class="ticket-cat">Panadería</span>
+              <h3 class="ticket-title">Bolsa de pan dulce surtido</h3>
+              <p class="ticket-desc">6 piezas variadas del día, listas para recoger en tienda.</p>
+              <div class="ticket-price-row">
+                <span class="ticket-price">$25<small>MXN</small></span>
+                <span class="ticket-exp">3 disponibles</span>
+              </div>
+            </div>
+          </div>
+          <p class="hero-stat .lbl" style="font-size:12px; color:rgba(241,244,233,.55); margin-top:12px; text-align:center;">Así se ve una oferta real en la plataforma.</p>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <section class="section container">
+        <span class="eyebrow">El proceso</span>
+        <h2 class="page-title">Tres pasos, sin vueltas</h2>
+        <p class="page-subtitle">Publicar un excedente y reservarlo toma minutos, no trámites.</p>
+
+        <div class="steps">
+          <article class="step">
+            <span class="step-num">01</span>
+            <h3>El comercio publica</h3>
+            <p class="muted">Sube el excedente con foto, precio, cantidad y hora límite de recolección.</p>
+          </article>
+          <article class="step">
+            <span class="step-num">02</span>
+            <h3>Alguien lo reserva</h3>
+            <p class="muted">Busca por categoría o cercanía y aparta el producto antes de que se acabe.</p>
+          </article>
+          <article class="step">
+            <span class="step-num">03</span>
+            <h3>Se recoge la oferta</h3>
+            <p class="muted">Pasa por el comercio, paga en tienda y ese alimento no termina en la basura.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section container">
+        <span class="eyebrow">Explora</span>
+        <h2 class="page-title">¿Qué ofertas hay hoy?</h2>
+        <p class="page-subtitle">Categorías más comunes en la plataforma.</p>
+
+        <div class="chip-row">
+          <a class="chip" href="/ofertas?category=Panader%C3%ADa">🥖 Panadería</a>
+          <a class="chip" href="/ofertas?category=Frutas">🍎 Frutas</a>
+          <a class="chip" href="/ofertas?category=Comida">🍱 Comida preparada</a>
+          <a class="chip" href="/ofertas?category=Bebidas">🥤 Bebidas</a>
+          <a class="chip" href="/ofertas?category=L%C3%A1cteos">🧀 Lácteos</a>
+          <a class="chip" href="/ofertas?category=Verduras">🥬 Verduras</a>
+        </div>
+      </section>
+
+      <section class="section container">
+        <div class="impact-strip">
+          <div>
+            <span class="eyebrow" style="color:var(--acento);">Por qué importa</span>
+            <h2 style="color:#fff; margin-bottom:8px;">Cada oferta aprovechada suma a los ODS</h2>
+            <p class="muted" style="color:rgba(241,244,233,.7); max-width:46ch;">
+              Conectar excedentes con personas reduce hambre, desperdicio y emisiones asociadas a la comida que nunca se comió.
+            </p>
+            <a href="/impacto-ods" class="btn btn-outline" style="color:#fff; border-color:rgba(255,255,255,.4); margin-top:16px;">Ver impacto completo</a>
+          </div>
+          <div class="stat">
+            <div class="big">ODS 2</div>
+            <div class="lbl">Hambre cero</div>
+          </div>
+          <div class="stat">
+            <div class="big">ODS 12</div>
+            <div class="lbl">Consumo responsable</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('layout/footer') %>
+  </body>
+</html>

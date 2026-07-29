@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Impacto ODS | Conecta Alimentos</title>
+  </head>
+  <body>
+    <%- include('layout/header', { title: 'Impacto ODS' }) %>
+
+    <nav class="breadcrumb container">
+      <a href="/">Inicio</a> / <span>Impacto ODS</span>
+    </nav>
+
+    <section class="hero" style="padding:48px 0;">
+      <div class="container">
+        <span class="eyebrow">Objetivos de Desarrollo Sostenible</span>
+        <h1 style="font-family:var(--font-display); color:#fff; font-size:clamp(28px,4vw,42px); max-width:20ch;">Cada oferta aprovechada es una acción medible.</h1>
+        <p class="muted" style="color:rgba(241,244,233,.75); max-width:60ch; margin-top:10px;">
+          Conecta Alimentos no es solo un marketplace: cada oferta publicada y cada reserva completada mueve la aguja en tres objetivos de la Agenda 2030 de la ONU.
+        </p>
+      </div>
+    </section>
+
+    <main class="container section">
+      <div class="grid cards">
+        <article class="card">
+          <span class="stamp ok">Principal</span>
+          <h3 style="margin-top:10px;">ODS 12 — Producción y consumo responsable</h3>
+          <p class="muted" style="margin-top:6px;">Reducimos el desperdicio conectando excedentes de comercios con personas que los aprovechan antes de que caduquen.</p>
+        </article>
+
+        <article class="card">
+          <span class="stamp warn">Secundario</span>
+          <h3 style="margin-top:10px;">ODS 2 — Hambre cero</h3>
+          <p class="muted" style="margin-top:6px;">Mejor aprovechamiento de alimentos a menor costo, ampliando el acceso a comida para más personas.</p>
+        </article>
+
+        <article class="card">
+          <span class="stamp info">Apoyo</span>
+          <h3 style="margin-top:10px;">ODS 13 — Acción por el clima</h3>
+          <p class="muted" style="margin-top:6px;">Menos comida tirada significa menos emisiones asociadas a su producción, transporte y descomposición.</p>
+        </article>
+      </div>
+
+      <div class="card" style="margin-top:26px; padding:26px;">
+        <h2 class="page-title">¿Por qué importa el desperdicio de alimentos?</h2>
+        <p class="muted" style="max-width:70ch;">
+          Una parte considerable de la comida que se produce en el mundo nunca llega a comerse: se pierde en el camino entre el comercio y la mesa. Conecta Alimentos ataca justo ese tramo — el excedente de panaderías, fruterías y negocios de comida que, sin una plataforma como esta, terminaría en la basura.
+        </p>
+      </div>
+    </main>
+
+    <%- include('layout/footer') %>
+  </body>
+</html>

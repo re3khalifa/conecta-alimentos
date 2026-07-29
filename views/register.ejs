@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Crear cuenta | Conecta Alimentos</title>
+</head>
+<body>
+
+  <%- include('layout/header', { title: 'Registro' }) %>
+
+  <div class="auth-shell">
+    <div class="auth-side">
+      <span class="eyebrow">Únete a Conecta Alimentos</span>
+      <h2>Menos desperdicio, más mesa para todos.</h2>
+      <p>Crea tu cuenta como persona para reservar excedentes cerca de ti, o como comercio para publicar lo que te sobra antes de que se pierda.</p>
+      <div class="chip-row">
+        <span class="chip">👤 Usuario — reserva</span>
+        <span class="chip">🏪 Comercio — publica</span>
+      </div>
+    </div>
+
+    <div class="auth-form-wrap">
+      <div class="form-card" style="width:min(100%, 400px);">
+        <h2 class="page-title">Crear cuenta</h2>
+        <p class="page-subtitle">Regístrate para acceder a la plataforma.</p>
+
+        <form id="registerForm" novalidate>
+
+          <label>Correo electrónico</label>
+          <input id="email" name="email" type="email"
+            placeholder="tucorreo@ejemplo.com" required />
+
+          <label>Contraseña</label>
+          <input id="password" name="password" type="password"
+            placeholder="Mínimo 8 caracteres" required minlength="8" />
+
+          <label>Tipo de cuenta</label>
+          <select id="role" name="role">
+            <option value="user">Usuario — quiero ver y reservar ofertas</option>
+            <option value="commerce">Comercio — quiero publicar ofertas</option>
+          </select>
+
+          <div class="form-check mt-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="privacyAccepted"
+              name="privacyAccepted"
+              required
+            >
+            <label class="form-check-label" for="privacyAccepted">
+              He leído y acepto el
+              <a href="/docs/aviso_privacidad_conecta_alimentos.pdf" target="_blank" style="color:var(--cielo);">
+                Aviso de privacidad
+              </a>
+            </label>
+          </div>
+
+          <p id="formMsg" class="form-msg" style="min-height:20px; margin-top:8px;"></p>
+
+          <button class="btn btn-block" type="submit" id="submitBtn">Registrarme</button>
+          <a class="btn btn-outline btn-block" href="/auth/login" style="margin-top:8px;">Ya tengo cuenta</a>
+
+        </form>
+
+        <script src="/js/csrf.js"></script>
+        <script src="/js/register.js" defer></script>
+      </div>
+    </div>
+  </div>
+
+  <%- include('layout/footer') %>
+
+</body>
+</html>
