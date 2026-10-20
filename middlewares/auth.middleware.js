@@ -2,7 +2,10 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function requireAuth(req, res, next) {
-  const token = req.cookies?.token;
+  const authHeader = req.headers.authorization;
+  const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  const token = req.cookies?.token || bearerToken;
+  // ...el resto de la función queda igual (jwt.verify, etc.)
 
   if (!token) {
     if (req.originalUrl.startsWith('/api/')) {
