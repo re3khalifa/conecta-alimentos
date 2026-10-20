@@ -35,6 +35,7 @@ function issueCsrfToken(req, res, next) {
  * valor para mandarlo como header.
  */
 function verifyCsrfToken(req, res, next) {
+  if (req.headers.authorization?.startsWith('Bearer ')) return next();
   if (SAFE_METHODS.includes(req.method)) return next();
 
   const cookieToken = req.cookies[CSRF_COOKIE];
