@@ -106,6 +106,12 @@ exports.login = async (req, res, next) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 día
     });
 
+    return res.status(200).json({
+    message: 'Login correcto',
+    token,              // 👈 nuevo: lo usa la app móvil
+    user: { id: user._id, email: user.email, role: user.role },
+    });
+
     await logEvent('auth.login.success', req, { user: user._id, email: user.email });
 
     return res.status(200).json({
