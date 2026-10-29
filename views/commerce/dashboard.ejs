@@ -32,6 +32,13 @@
       <div class="stat"><div class="skeleton sk-kpi"></div><div class="skeleton sk-lbl"></div></div>
       <div class="stat"><div class="skeleton sk-kpi"></div><div class="skeleton sk-lbl"></div></div>
     </div>
+  
+    <!-- MIS REPORTES (solo cifras de este comercio) -->
+    <p class="section-title">Mis reportes</p>
+    <div id="impactCard" class="card" style="padding:22px; margin-bottom:26px; display:none;">
+      <div id="impactStats"></div>
+      <p style="margin-top:16px;"><a class="btn btn-small" href="/api/commerce/reportes/reservas.csv">Descargar mis reservas (CSV)</a></p>
+    </div>
 
     <!-- ACCESOS RÁPIDOS -->
     <p class="section-title">Accesos rápidos</p>
@@ -58,6 +65,8 @@
 
   <%- include('../layout/footer') %>
 
+  <script src="/js/commerce-dashboard.js"></script>
+  <script src="/js/impact.js"></script>
   <script src="/js/commerce-dashboard.js"></script>
 
 </body>
