@@ -117,6 +117,7 @@ app.use('/api/commerce', require('./routes/commerce.routes'));
 app.use("/api/reservas", require("./routes/reservation.routes"));
 app.use("/api/soap", require("./routes/soap.routes"));
 app.use("/api/admin", require("./routes/admin.routes"));
+app.use("/api/impacto", require("./routes/impact.routes"));
  
 // ── 404 ──────────────────────────────────────────────────────────────────────
 app.use((req, res) => {
