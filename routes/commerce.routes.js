@@ -10,4 +10,11 @@ router.get('/stats',
   commerceController.getStats
 );
 
+// GET /api/commerce/reportes/reservas.csv — reporte propio descargable
+router.get('/reportes/reservas.csv',
+  requireAuth,
+  requireRole('commerce', 'admin'),
+  commerceController.exportReservationsCsv
+);
+
 module.exports = router;
