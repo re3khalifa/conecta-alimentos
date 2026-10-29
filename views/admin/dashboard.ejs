@@ -19,6 +19,19 @@
     <h1 class="page-title">Registro de auditoría</h1>
     <p class="page-subtitle">Últimos 200 eventos: logins, registros, ofertas y reservas.</p>
 
+    <span class="eyebrow">Reportes</span>
+    <h1 class="page-title">Resumen de la plataforma</h1>
+    <p class="page-subtitle">Usuarios, reservas, ofertas más reservadas y actividad reciente.</p>
+    <div id="reportContainer" class="card" style="padding:22px; margin-bottom:34px;">
+      <div class="loading-state">Cargando reporte…</div>
+    </div>
+
+    <span class="eyebrow">Impacto</span>
+    <h1 class="page-title">Impacto de toda la plataforma</h1>
+    <div id="impactCard" class="card" style="padding:22px; margin-bottom:34px; display:none;">
+      <div id="impactStats"></div>
+    </div>
+
     <div id="auditContainer" class="card" style="padding:0; overflow:hidden;">
       <div class="loading-state">Cargando eventos…</div>
     </div>
@@ -26,6 +39,8 @@
 
   <%- include('../layout/footer') %>
 
+  <script src="/js/impact.js"></script>
+  <script src="/js/admin-reports.js"></script>
   <script src="/js/admin-dashboard.js"></script>
 
 </body>
