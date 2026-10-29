@@ -27,6 +27,18 @@ async function loadDashboard() {
         <div class="kpi red">${data.vencidas}</div>
         <div class="lbl">Vencidas</div>
       </div>
+      <div class="stat">
+        <div class="kpi green">${data.reservasActivas ?? 0}</div>
+        <div class="lbl">Reservas activas</div>
+      </div>
+      <div class="stat">
+        <div class="kpi green">${data.unidadesReservadas ?? 0}</div>
+        <div class="lbl">Unidades reservadas</div>
+      </div>
+      <div class="stat">
+        <div class="kpi green">$${(data.valorReservado ?? 0).toLocaleString('es-MX')}</div>
+        <div class="lbl">Valor reservado (MXN)</div>
+      </div>
     `;
 
     // ── Recientes ────────────────────────────────────────────────────────
