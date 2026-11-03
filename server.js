@@ -18,7 +18,7 @@ app.set('trust proxy', 1);
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 5,
+  max: 15,
   standardHeaders: true,
   legacyHeaders: false,
 
