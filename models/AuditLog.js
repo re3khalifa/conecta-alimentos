@@ -13,6 +13,7 @@ const auditLogSchema = new mongoose.Schema({
       'offer.update',
       'offer.delete',
       'reservation.create',
+      'reservation.cancel',
     ],
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
