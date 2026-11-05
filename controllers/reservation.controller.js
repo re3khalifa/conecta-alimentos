@@ -24,7 +24,14 @@ exports.createReservation = async (req, res, next) => {
       return res.status(400).json({ message: "Esta oferta ya venció" });
     }
 
-    // 4. Evitar duplicados
+    // 4. Cantidad pedida (entero >= 1; por defecto 1 para clientes viejos)
+    const rawQty = req.body && req.body.quantity !== undefined ? req.body.quantity : 1;
+    const qty = Number(rawQty);
+    if (!Number.isInteger(qty) || qty < 1) {
+      return res.status(400).json({ message: "La cantidad debe ser un número entero mayor o igual a 1" });
+    }
+
+    // 5. Evitar duplicados
     const existing = await Reservation.findOne({
       user: userId,
       offer: offerId,
@@ -34,19 +41,29 @@ exports.createReservation = async (req, res, next) => {
       return res.status(400).json({ message: "Ya reservaste esta oferta" });
     }
 
-    // 5. Validar stock
+    // 6. Validar stock
     if (!offer.quantity || offer.quantity <= 0) {
       return res.status(400).json({ message: "No hay stock disponible" });
     }
+    if (qty > offer.quantity) {
+      return res.status(400).json({ message: `Solo quedan ${offer.quantity} disponibles` });
+    }
 
-    // 6. Crear reserva
-    const reservation = await Reservation.create({ user: userId, offer: offerId });
+    // 7. Descontar stock de forma atómica: si otra persona reservó al mismo
+    //    tiempo y ya no alcanza, el filtro quantity >= qty no coincide.
+    const updated = await Offer.findOneAndUpdate(
+      { _id: offerId, quantity: { $gte: qty } },
+      { $inc: { quantity: -qty } },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(400).json({ message: "Ya no hay suficientes unidades disponibles" });
+    }
 
-    // 7. Reducir stock
-    offer.quantity -= 1;
-    await offer.save();
+    // 8. Crear reserva
+    const reservation = await Reservation.create({ user: userId, offer: offerId, quantity: qty });
 
-    await logEvent('reservation.create', req, { detail: { offerId, reservationId: reservation._id } });
+    await logEvent('reservation.create', req, { detail: { offerId, reservationId: reservation._id, quantity: qty } });
 
     res.status(201).json(reservation);
   } catch (err) {
@@ -61,6 +78,40 @@ exports.getMyReservations = async (req, res, next) => {
       .sort({ createdAt: -1 });
 
     res.json(reservations);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.cancelReservation = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.sub;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "ID de reserva inválido" });
+    }
+
+    // Solo la persona dueña de la reserva puede cancelarla, y solo si sigue activa.
+    // El filtro por status evita devolver el stock dos veces si llegan dos peticiones.
+    const reservation = await Reservation.findOneAndUpdate(
+      { _id: id, user: userId, status: "activa" },
+      { status: "cancelada" },
+      { new: true }
+    );
+
+    if (!reservation) {
+      return res.status(404).json({ message: "Reserva no encontrada o ya cancelada" });
+    }
+
+    // Devolver las unidades a la oferta (si la oferta ya no existe, no pasa nada)
+    await Offer.findByIdAndUpdate(reservation.offer, { $inc: { quantity: reservation.quantity || 1 } });
+
+    await logEvent('reservation.cancel', req, {
+      detail: { reservationId: reservation._id, offerId: reservation.offer, quantity: reservation.quantity || 1 },
+    });
+
+    res.json(reservation);
   } catch (err) {
     next(err);
   }
