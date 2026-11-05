@@ -19,4 +19,13 @@ router.get(
   reservationController.getMyReservations
 );
 
+// Cancelar una reserva propia (devuelve el stock). POST y no PATCH para que
+// también funcione desde la app móvil (HttpsURLConnection no soporta PATCH).
+router.post(
+  "/:id/cancel",
+  requireAuth,
+  requireRole("user"),
+  reservationController.cancelReservation
+);
+
 module.exports = router;
