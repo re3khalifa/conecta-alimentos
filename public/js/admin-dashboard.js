@@ -13,7 +13,7 @@ const EVENT_LABELS = {
   'offer.update': { label: 'Oferta editada', stamp: 'warn' },
   'offer.delete': { label: 'Oferta eliminada', stamp: 'danger' },
   'reservation.create': { label: 'Reserva creada', stamp: 'ok' },
-  'reservation.cancel': 'Reserva cancelada',
+  'reservation.cancel': { label: 'Reserva cancelada', stamp: 'warn' },
 };
 
 async function loadAuditLog() {
