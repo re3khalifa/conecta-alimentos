@@ -27,3 +27,9 @@ const ReservationSchema = new mongoose.Schema(
 });
 
 module.exports = mongoose.model("Reservation", ReservationSchema);
+},
+{
+  timestamps: true
+});
+
+module.exports = mongoose.model("Reservation", ReservationSchema);
