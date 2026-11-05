@@ -80,7 +80,10 @@ function renderCard(o) {
     <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
       <a class="btn btn-outline" href="/ofertas">Volver</a>
       ${canReserve
-        ? `<button class="btn reserve-btn" data-offer-id="${o._id}">Reservar</button>`
+        ? `<label for="reserveQty" class="muted" style="align-self:center;">Cantidad</label>
+           <input id="reserveQty" type="number" min="1" max="${o.quantity}" step="1" value="1"
+                  style="width:84px; padding:8px 10px; border:1px solid var(--line, #d9d5c7); border-radius:8px; font:inherit;" />
+           <button class="btn reserve-btn" data-offer-id="${o._id}" data-max="${o.quantity}">Reservar</button>`
         : alreadyReserved
           ? `<span class="muted" style="align-self:center;">Ya reservaste esta oferta</span>`
           : o.quantity <= 0
@@ -174,7 +177,16 @@ async function loadWeather(lat, lng) {
  
 document.getElementById("detailCard").addEventListener("click", (e) => {
   const btn = e.target.closest(".reserve-btn");
-  if (btn) reserveOffer(btn.dataset.offerId);
+  if (btn) {
+    const input = document.getElementById("reserveQty");
+    const max = Number(btn.dataset.max) || 1;
+    const qty = Number(input ? input.value : 1);
+    if (!Number.isInteger(qty) || qty < 1 || qty > max) {
+      showToast(`Elige una cantidad entre 1 y ${max}`, "err");
+      return;
+    }
+    reserveOffer(btn.dataset.offerId, qty);
+  }
 });
 
 (async () => {
@@ -201,17 +213,19 @@ document.getElementById("detailCard").addEventListener("click", (e) => {
   }
 })();
  
-async function reserveOffer(offerId) {
+async function reserveOffer(offerId, quantity = 1) {
   try {
     const res = await fetchCsrf(`/api/reservas/${offerId}`, {
-    method: "POST",
-    credentials: "include"
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ quantity })
     });
  
     const data = await res.json();
  
     if (res.ok) {
-      showToast("Reserva realizada correctamente");
+      showToast(`Reserva realizada: ${quantity} unidad(es)`);
       setTimeout(() => location.reload(), 900);
     } else {
       showToast(data.message || "No se pudo reservar", "err");
@@ -228,11 +242,11 @@ let alreadyReserved = false;
 async function checkIfReserved(offerId) {
   try {
     const res = await fetch("/api/reservas/mine", {
-    credentials: "include"
-  });
+      credentials: "include"
+    });
     const data = await res.json();
  
-    alreadyReserved = data.some(r => r.offer._id === offerId);
+    alreadyReserved = data.some(r => r.offer && r.offer._id === offerId && r.status === "activa");
  
   } catch (err) {
     console.error("Error verificando reservas", err);
