@@ -24,9 +24,13 @@ async function loadReservations() {
       const expDate = r.offer?.expirationDate;
       const isExpired = expDate ? new Date(expDate) < new Date() : false;
 
-      const stamp = isExpired
-        ? `<span class="stamp danger ticket-stamp">Vencida</span>`
-        : `<span class="stamp ok ticket-stamp">Activa</span>`;
+      const isCancelled = r.status === "cancelada";
+      const qty = r.quantity || 1;
+      const stamp = isCancelled
+        ? `<span class="stamp danger ticket-stamp">Cancelada</span>`
+        : isExpired
+          ? `<span class="stamp danger ticket-stamp">Vencida</span>`
+          : `<span class="stamp ok ticket-stamp">Activa</span>`;
 
       const media = r.offer?.image
         ? `<img src="${r.offer.image}" alt="${escapeHtml(r.offer.title)}" loading="lazy" />`
@@ -47,10 +51,11 @@ async function loadReservations() {
             <h3 class="ticket-title">${escapeHtml(r.offer?.title) || "Sin título"}</h3>
             <p class="ticket-desc">${escapeHtml(r.offer?.description || "")}</p>
             <div class="ticket-price-row">
-              <span class="ticket-exp">Caduca: ${expDate ? new Date(expDate).toLocaleDateString("es-MX") : "N/D"}</span>
+              <span class="ticket-exp">Cantidad: ${qty} · Caduca: ${expDate ? new Date(expDate).toLocaleDateString("es-MX") : "N/D"}</span>
             </div>
             <div class="ticket-actions">
-              <a href="/ofertas/${r.offer._id}" class="btn btn-small">Ver detalle</a>
+              <a href="/ofertas/${r.offer?._id}" class="btn btn-small">Ver detalle</a>
+              ${isCancelled ? "" : `<button class="btn btn-outline btn-small cancel-btn" data-id="${r._id}">Cancelar reserva</button>`}
             </div>
           </div>
         </article>`;
@@ -63,3 +68,29 @@ async function loadReservations() {
 }
 
 loadReservations();
+
+
+document.getElementById("reservationsContainer").addEventListener("click", async (e) => {
+  const btn = e.target.closest(".cancel-btn");
+  if (!btn) return;
+  if (!confirm("¿Seguro que quieres cancelar esta reserva? Las unidades se devolverán a la oferta.")) return;
+
+  btn.disabled = true;
+  try {
+    const res = await fetchCsrf(`/api/reservas/${btn.dataset.id}/cancel`, {
+      method: "POST",
+      credentials: "include",
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      loadReservations();
+    } else {
+      alert(data.message || "No se pudo cancelar la reserva");
+      btn.disabled = false;
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error de conexión");
+    btn.disabled = false;
+  }
+});
