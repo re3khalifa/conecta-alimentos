@@ -16,8 +16,8 @@ router.get('/:id',  offerController.getById);
 // Protegidas — uploadOfferImage debe ir ANTES de offerValidation, ya que es
 // multipart/form-data: multer parsea el body antes de que express-validator
 // pueda leer req.body.
-router.post('/',      requireAuth, requireRole('commerce', 'admin'), uploadOfferImage.single('image'), offerValidation, validate, offerController.create);
-router.put('/:id',    requireAuth, requireRole('commerce', 'admin'), uploadOfferImage.single('image'), offerValidation, validate, offerController.update);
+router.post('/',      requireAuth, requireRole('commerce', 'admin'), uploadOfferImage.single('image'), validateImageContent, offerValidation, validate, offerController.create);
+router.put('/:id',    requireAuth, requireRole('commerce', 'admin'), uploadOfferImage.single('image'), validateImageContent, offerValidation, validate, offerController.update);
 router.delete('/:id', requireAuth, requireRole('commerce', 'admin'), offerController.remove);
 
 module.exports = router;
