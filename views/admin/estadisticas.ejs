@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Estadísticas | Conecta Alimentos</title>
+</head>
+<body>
+
+  <%- include('../layout/header', { title: 'Estadísticas' }) %>
+
+  <nav class="breadcrumb container">
+    <a href="/">Inicio</a> / <a href="/admin">Panel admin</a> / <span>Estadísticas</span>
+  </nav>
+
+  <main class="container section">
+    <span class="eyebrow">Impacto</span>
+    <h1 class="page-title">Impacto de toda la plataforma</h1>
+    <div id="impactCard" class="card" style="padding:22px; margin-bottom:34px; display:none;">
+      <div id="impactStats"></div>
+    </div>
+
+    <span class="eyebrow">Reportes</span>
+    <h1 class="page-title">Resumen de la plataforma</h1>
+    <p class="page-subtitle">Usuarios, reservas, ofertas más reservadas y actividad reciente.</p>
+    <div id="reportContainer" class="card" style="padding:22px; margin-bottom:34px;">
+      <div class="loading-state">Cargando reporte…</div>
+    </div>
+
+    <p><a class="btn btn-outline" href="/admin">Volver al panel</a></p>
+  </main>
+
+  <%- include('../layout/footer') %>
+
+  <script src="/js/impact.js"></script>
+  <script src="/js/admin-reports.js"></script>
+
+</body>
+</html>
