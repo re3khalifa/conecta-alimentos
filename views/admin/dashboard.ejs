@@ -15,33 +15,34 @@
   </nav>
 
   <main class="container section">
-    <span class="eyebrow">Seguridad</span>
-    <h1 class="page-title">Registro de auditoría</h1>
-    <p class="page-subtitle">Últimos 200 eventos: logins, registros, ofertas y reservas.</p>
+    <span class="eyebrow">Administración</span>
+    <h1 class="page-title">Panel de administración</h1>
+    <p class="page-subtitle">Elige qué quieres revisar.</p>
 
-    <span class="eyebrow">Reportes</span>
-    <h1 class="page-title">Resumen de la plataforma</h1>
-    <p class="page-subtitle">Usuarios, reservas, ofertas más reservadas y actividad reciente.</p>
-    <div id="reportContainer" class="card" style="padding:22px; margin-bottom:34px;">
-      <div class="loading-state">Cargando reporte…</div>
-    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; margin-top:24px;">
 
-    <span class="eyebrow">Impacto</span>
-    <h1 class="page-title">Impacto de toda la plataforma</h1>
-    <div id="impactCard" class="card" style="padding:22px; margin-bottom:34px; display:none;">
-      <div id="impactStats"></div>
-    </div>
+      <div class="card" style="padding:26px;">
+        <span class="eyebrow">Seguridad</span>
+        <h2 class="page-title" style="font-size:26px;">Auditoría</h2>
+        <p class="muted" style="margin:8px 0 20px;">
+          Registro de eventos: logins, registros, cierres de sesión, ofertas y reservas.
+        </p>
+        <a class="btn" href="/admin/auditoria">Ver auditoría</a>
+      </div>
 
-    <div id="auditContainer" class="card" style="padding:0; overflow:hidden;">
-      <div class="loading-state">Cargando eventos…</div>
+      <div class="card" style="padding:26px;">
+        <span class="eyebrow">Reportes</span>
+        <h2 class="page-title" style="font-size:26px;">Estadísticas</h2>
+        <p class="muted" style="margin:8px 0 20px;">
+          Impacto de la plataforma y resumen de usuarios, ofertas y reservas.
+        </p>
+        <a class="btn" href="/admin/estadisticas">Ver estadísticas</a>
+      </div>
+
     </div>
   </main>
 
   <%- include('../layout/footer') %>
-
-  <script src="/js/impact.js"></script>
-  <script src="/js/admin-reports.js"></script>
-  <script src="/js/admin-dashboard.js"></script>
 
 </body>
 </html>
