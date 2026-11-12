@@ -1,21 +1,8 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
 const Offer = require('../models/Offer');
 const Reservation = require("../models/Reservation");
-const { UPLOAD_DIR } = require('../middlewares/upload.middleware');
+const { saveImage, deleteImageByUrl } = require('../services/image.service');
 const { logEvent } = require('../services/audit.service');
-
-function deleteImageFile(imageUrl) {
-  if (!imageUrl) return;
-  const filename = path.basename(imageUrl);
-  const filePath = path.join(UPLOAD_DIR, filename);
-  fs.unlink(filePath, (err) => {
-    if (err && err.code !== 'ENOENT') {
-      console.error('No se pudo borrar la imagen anterior:', err.message);
-    }
-  });
-}
 
 // ── GET /api/ofertas ─────────────────────────────────────────────────────────
 exports.getAll = async (req, res, next) => {
