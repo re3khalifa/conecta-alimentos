@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Auditoría | Conecta Alimentos</title>
+</head>
+<body>
+
+  <%- include('../layout/header', { title: 'Auditoría' }) %>
+
+  <nav class="breadcrumb container">
+    <a href="/">Inicio</a> / <a href="/admin">Panel admin</a> / <span>Auditoría</span>
+  </nav>
+
+  <main class="container section">
+    <span class="eyebrow">Seguridad</span>
+    <h1 class="page-title">Auditoría</h1>
+    <p class="page-subtitle">Eventos de los últimos 7 días y registro de los últimos 200 eventos.</p>
+
+    <div class="card" style="padding:22px; margin:20px 0 34px;">
+      <h3 class="chart-title" style="margin-top:0;">Eventos de los últimos 7 días</h3>
+      <div id="eventsSummary"><div class="loading-state">Cargando eventos…</div></div>
+    </div>
+
+    <h2 class="page-title" style="font-size:26px;">Registro de eventos</h2>
+    <div id="auditContainer" class="card" style="padding:0; overflow:hidden; margin-top:12px;">
+      <div class="loading-state">Cargando eventos…</div>
+    </div>
+
+    <p style="margin-top:24px;"><a class="btn btn-outline" href="/admin">Volver al panel</a></p>
+  </main>
+
+  <%- include('../layout/footer') %>
+
+  <script src="/js/admin-events.js"></script>
+  <script src="/js/admin-dashboard.js"></script>
+
+</body>
+</html>
