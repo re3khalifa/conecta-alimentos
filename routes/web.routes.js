@@ -42,6 +42,16 @@ router.get('/admin',
   (req, res) => res.render('admin/dashboard', { title: 'Panel Admin' })
 );
 
+router.get('/admin/auditoria',
+  requireAuth, requireRole('admin'),
+  (req, res) => res.render('admin/auditoria', { title: 'Auditoría' })
+);
+
+router.get('/admin/estadisticas',
+  requireAuth, requireRole('admin'),
+  (req, res) => res.render('admin/estadisticas', { title: 'Estadísticas' })
+);
+
 router.get('/commerce/offers',
   requireAuth, requireRole('commerce', 'admin'),
   (req, res) => res.render('commerce/offers', { title: 'Mis Ofertas' })
