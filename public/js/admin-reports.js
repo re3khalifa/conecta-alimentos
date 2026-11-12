@@ -26,9 +26,10 @@
         [act.reservas, 'Reservas activas'],
         [can.reservas, 'Reservas canceladas'],
       ];
-      const maxEv = Math.max(1, ...d.eventosUltimos7dias.map((e) => e.total));
-      const events = d.eventosUltimos7dias.length
-        ? d.eventosUltimos7dias.map((e) => `
+      const visible = d.eventosUltimos7dias.filter((e) => !HIDDEN_EVENTS.includes(e.evento));
+      const maxEv = Math.max(1, ...visible.map((e) => e.total));
+      const events = visible.length
+        ? visible.map((e) => `
             <div class="hbar"><span>${esc(EVENTS[e.evento] || e.evento)}</span>
             <div class="track"><div class="fill" style="width:${(e.total / maxEv) * 100}%"></div></div><strong>${e.total}</strong></div>`).join('')
         : '<p class="muted">Sin eventos en los últimos 7 días.</p>';
