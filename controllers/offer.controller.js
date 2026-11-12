@@ -104,11 +104,17 @@ exports.create = async (req, res, next) => {
     }
 
     if (req.file) {
-      offerData.image = `/uploads/offers/${req.file.filename}`;
+      offerData.image = await saveImage(req.file, req.user.sub);
     }
 
     const offer = new Offer(offerData);
-    const saved = await offer.save();
+    let saved;
+    try {
+      saved = await offer.save();
+    } catch (err) {
+      await deleteImageByUrl(offerData.image); // no dejar la foto huérfana
+      throw err;
+    }
     await logEvent('offer.create', req, { detail: { offerId: saved._id, title: saved.title } });
     res.status(201).json(saved);
   } catch (err) {
