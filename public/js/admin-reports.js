@@ -3,6 +3,8 @@
   if (!box) return;
   const nf = new Intl.NumberFormat('es-MX');
   const esc = (s) => { const d = document.createElement('div'); d.appendChild(document.createTextNode(s ?? '')); return d.innerHTML; };
+    // Estos dos eventos se ven en Auditoría, no en el resumen de estadísticas.
+  const HIDDEN_EVENTS = ['auth.logout', 'auth.register'];
   const ROLES = { user: 'Usuarios', commerce: 'Comercios', admin: 'Administradores' };
   const EVENTS = {
     'auth.login.success': 'Login OK', 'auth.login.failed': 'Login fallido', 'auth.register': 'Registros',
