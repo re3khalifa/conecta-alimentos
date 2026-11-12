@@ -2,7 +2,7 @@ const router = require('express').Router();
 const offerController = require('../controllers/offer.controller');
 const requireAuth = require('../middlewares/auth.middleware');
 const requireRole = require('../middlewares/role.middleware');
-const { uploadOfferImage } = require('../middlewares/upload.middleware');
+const { uploadOfferImage, validateImageContent } = require('../middlewares/upload.middleware');
 const { offerValidation } = require('../validators/offer.validators');
 const validate = require('../middlewares/validate.middleware');
 
