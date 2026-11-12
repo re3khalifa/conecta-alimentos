@@ -1,8 +1,4 @@
 const multer = require('multer');
-const path = require('path');
-const crypto = require('crypto');
-
-const UPLOAD_DIR = path.join(__dirname, '..', 'public', 'uploads', 'offers');
 
 const ALLOWED_MIME = {
   'image/jpeg': 'jpg',
@@ -10,14 +6,8 @@ const ALLOWED_MIME = {
   'image/webp': 'webp',
 };
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, UPLOAD_DIR),
-  filename: (req, file, cb) => {
-    const ext = ALLOWED_MIME[file.mimetype] || 'jpg';
-    const name = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}.${ext}`;
-    cb(null, name);
-  },
-});
+// La foto se queda en memoria y de ahí se guarda en MongoDB (ver image.service.js).
+const storage = multer.memoryStorage();
 
 function fileFilter(req, file, cb) {
   if (!ALLOWED_MIME[file.mimetype]) {
@@ -29,7 +19,27 @@ function fileFilter(req, file, cb) {
 const uploadOfferImage = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  limits: { fileSize: 5 * 1024 * 1024, files: 1 }, // 5 MB, una sola foto
 });
 
-module.exports = { uploadOfferImage, UPLOAD_DIR };
+// El tipo MIME lo manda el cliente y se puede falsificar: se revisan los
+// primeros bytes del archivo ("firma") para confirmar que de verdad es imagen.
+function detectImageType(buf) {
+  if (!buf || buf.length < 12) return null;
+  if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return 'image/jpeg';
+  if (buf.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return 'image/png';
+  if (buf.subarray(0, 4).toString('ascii') === 'RIFF' && buf.subarray(8, 12).toString('ascii') === 'WEBP') return 'image/webp';
+  return null;
+}
+
+function validateImageContent(req, res, next) {
+  if (!req.file) return next();
+  const real = detectImageType(req.file.buffer);
+  if (!real) {
+    return res.status(400).json({ message: 'El archivo no es una imagen válida (JPG, PNG o WEBP).' });
+  }
+  req.file.mimetype = real;
+  next();
+}
+
+module.exports = { uploadOfferImage, validateImageContent };
