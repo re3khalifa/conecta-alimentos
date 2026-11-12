@@ -149,15 +149,21 @@ exports.update = async (req, res, next) => {
     }
 
     if (req.file) {
-      updateData.image = `/uploads/offers/${req.file.filename}`;
-      deleteImageFile(offer.image);
+      updateData.image = await saveImage(req.file, req.user.sub);
     }
 
-    const updated = await Offer.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      { new: true, runValidators: true }
-    );
+    let updated;
+    try {
+      updated = await Offer.findByIdAndUpdate(
+        req.params.id,
+        updateData,
+        { new: true, runValidators: true }
+      );
+    } catch (err) {
+      if (req.file) await deleteImageByUrl(updateData.image); // la nueva no se usó
+      throw err;
+    }
+    if (req.file) await deleteImageByUrl(offer.image); // ya se reemplazó: borra la anterior
     await logEvent('offer.update', req, { detail: { offerId: req.params.id } });
     res.json(updated);
   } catch (err) {
@@ -176,7 +182,7 @@ exports.remove = async (req, res, next) => {
     }
 
     await Offer.findByIdAndDelete(req.params.id);
-    deleteImageFile(offer.image);
+    await deleteImageByUrl(offer.image);
     await logEvent('offer.delete', req, { detail: { offerId: req.params.id, title: offer.title } });
     res.json({ message: 'Oferta eliminada' });
   } catch (err) {
