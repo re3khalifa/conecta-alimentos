@@ -111,6 +111,7 @@ app.use((req, res, next) => {
 // ── Rutas ────────────────────────────────────────────────────────────────────
 app.use('/', require('./routes/web.routes'));
 app.use('/api/ofertas', require('./routes/offer.routes'));
+app.use('/api/imagenes', require('./routes/image.routes'));
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/commerce', require('./routes/commerce.routes'));
