@@ -73,7 +73,7 @@ exports.createReservation = async (req, res, next) => {
 
 exports.getMyReservations = async (req, res, next) => {
   try {
-    const reservations = await Reservation.find({ user: req.user.sub })
+      const reservations = await Reservation.find({ user: req.user.sub, status: "activa" })
       .populate("offer")
       .sort({ createdAt: -1 });
 
