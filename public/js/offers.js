@@ -28,8 +28,14 @@ function mapsUrlFromOffer(o) {
   const lng = o?.location?.lng;
   const hasCoords = typeof lat === "number" && typeof lng === "number";
 
-  return hasCoords
-    ? `https://www.google.com/maps?q=${encodeURIComponent(`${lat},${lng}`)}`
+  if (hasCoords) {
+    return `https://www.google.com/maps?q=${encodeURIComponent(`${lat},${lng}`)}`;
+  }
+
+  // Sin coordenadas (ofertas publicadas desde la app móvil): se busca por dirección.
+  const address = (o?.address || "").trim();
+  return address
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
     : null;
 }
 
