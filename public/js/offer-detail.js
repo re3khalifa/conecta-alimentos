@@ -98,30 +98,54 @@ function renderCard(o) {
  
 /**
  * Google Maps por iframe (sin Google Cloud):
- * https://www.google.com/maps?q=lat,lng&output=embed
+ * con coordenadas:  https://www.google.com/maps?q=lat,lng&output=embed
+ * sin coordenadas:  se usa la dirección escrita (p. ej. ofertas publicadas desde la app móvil)
  */
-function setGoogleMapsIframe(lat, lng) {
+function setGoogleMapsIframe(lat, lng, address) {
   const frame = document.getElementById("gmapFrame");
   const link = document.getElementById("gmapLink");
- 
-  if (typeof lat !== "number" || typeof lng !== "number") {
-    // No coords
+
+  const hasCoords = typeof lat === "number" && typeof lng === "number";
+  const q = hasCoords ? `${lat},${lng}` : (address || "").trim();
+
+  if (!q) {
+    // Ni coordenadas ni dirección
     frame.remove();
     link.style.display = "none";
     const wrap = document.querySelector(".map-embed");
     if (wrap) {
       wrap.innerHTML = `<div class="muted" style="padding:14px;">
-        Esta oferta no tiene ubicación (lat/lng).
+        Esta oferta no tiene ubicación.
       </div>`;
     }
     return;
   }
- 
-  const q = `${lat},${lng}`;
+
   frame.src = `https://www.google.com/maps?q=${encodeURIComponent(q)}&output=embed`;
-  link.href = `https://www.google.com/maps?q=${encodeURIComponent(q)}`;
+  link.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 }
- 
+
+/**
+ * Si la oferta no trae lat/lng (las ofertas publicadas desde la app móvil solo
+ * traen dirección), se busca la dirección en Nominatim (OpenStreetMap), igual
+ * que hace el formulario de nueva oferta.
+ */
+async function geocodeAddress(address) {
+  if (!address || !address.trim()) return null;
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&countrycodes=mx`;
+    const res = await fetch(url, { headers: { Accept: "application/json" } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) return null;
+    const lat = parseFloat(data[0].lat);
+    const lng = parseFloat(data[0].lon);
+    return Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 /**
  * Open-Meteo (API de terceros real, sin key)
  */
@@ -197,10 +221,19 @@ document.getElementById("detailCard").addEventListener("click", (e) => {
     await checkIfReserved(offer._id);
     renderCard(offer);
  
-    const lat = offer?.location?.lat;
-    const lng = offer?.location?.lng;
- 
-    setGoogleMapsIframe(lat, lng);
+    let lat = offer?.location?.lat;
+    let lng = offer?.location?.lng;
+
+    // Sin coordenadas guardadas: se intenta ubicar la dirección.
+    if (typeof lat !== "number" || typeof lng !== "number") {
+      const found = await geocodeAddress(offer.address);
+      if (found) {
+        lat = found.lat;
+        lng = found.lng;
+      }
+    }
+
+    setGoogleMapsIframe(lat, lng, offer.address);
     loadWeather(lat, lng);
   } catch (e) {
     document.getElementById("detailCard").innerHTML = `
@@ -216,10 +249,10 @@ document.getElementById("detailCard").addEventListener("click", (e) => {
 async function reserveOffer(offerId, quantity = 1) {
   try {
     const res = await fetchCsrf(`/api/reservas/${offerId}`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ quantity })
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ quantity })
     });
  
     const data = await res.json();
@@ -242,8 +275,8 @@ let alreadyReserved = false;
 async function checkIfReserved(offerId) {
   try {
     const res = await fetch("/api/reservas/mine", {
-      credentials: "include"
-    });
+    credentials: "include"
+  });
     const data = await res.json();
  
     alreadyReserved = data.some(r => r.offer && r.offer._id === offerId && r.status === "activa");
